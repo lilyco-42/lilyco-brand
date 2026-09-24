@@ -1,0 +1,126 @@
+{
+  "registry": "mpkg",
+  "version": "0.1",
+  "packages": [
+    {
+      "name": "make-snake-game",
+      "version": "0.1.0",
+      "id": "sha256:032bfc0263f7404048e803d71522093da43b6fa07b549372a6aca0ceac17b987",
+      "file": "packages/make-snake-game-0.1.0-032bfc0263f7.mpkg",
+      "intent": "生成并验证一个可玩的贪吃蛇 CLI 游戏（纯标准库，含 headless 自检）",
+      "tags": [
+        "game",
+        "python",
+        "cli"
+      ],
+      "author": "agent:lilyco-42/lyco_agent",
+      "size": 2867,
+      "published_at": "2026-09-12T14:20:43+0800",
+      "attestations": 2
+    },
+    {
+      "name": "kbv-video-distill",
+      "version": "0.1.0",
+      "id": "sha256:c6fdbee7a313568193c5fa6781c11a6f76d16a0279c85044b8ad291f4385bd6a",
+      "file": "packages/kbv-video-distill-0.1.0-c6fdbee7a313.mpkg",
+      "intent": "从教程视频蒸馏可检索知识原子：ffmpeg 提音频/抽帧 + whisper ASR + tesseract OCR + 切片聚类 + 关联索引（kbv spec 六原子管线）",
+      "tags": [
+        "video",
+        "kbv",
+        "ocr",
+        "asr",
+        "whisper",
+        "knowledge"
+      ],
+      "author": "agent:lilyco-42/lyco_agent",
+      "size": 4808,
+      "published_at": "2026-09-12T20:41:36+0800",
+      "attestations": 1
+    },
+    {
+      "name": "asr-code-rust-book",
+      "version": "0.1.0",
+      "id": "sha256:681db83d8b454852e03618628cd7fb5c4e70e6b5f9a2335863f04c075c8809e5",
+      "file": "packages/asr-code-rust-book-0.1.0-681db83d8b45.mpkg",
+      "intent": "Rust 官方教程 (The Book ch01-02) 知识蒸馏包: 38 个逐条定位知识原子 + 确定性重蒸验证配方 (asr_code 蒸馏器)",
+      "tags": [
+        "rust",
+        "asr-code",
+        "knowledge",
+        "learning",
+        "book"
+      ],
+      "author": "agent:lilyco-42/lyco_agent",
+      "size": 117630,
+      "published_at": "2026-09-13T15:38:46+0800",
+      "attestations": 1
+    },
+    {
+      "name": "asr-code-rust-book",
+      "version": "0.1.256",
+      "id": "sha256:3883caf31ced7695088df1048df664aa38791c21ac7d0a86915bed94011b1df8",
+      "file": "packages/asr-code-rust-book-0.1.256-3883caf31ced.mpkg",
+      "intent": "Rust 官方教程 (The Book ch01-02) 知识蒸馏包: 逐条定位知识原子 + 确定性重蒸验证配方 (asr_code 蒸馏器)",
+      "tags": [
+        "rust",
+        "asr-code",
+        "knowledge",
+        "learning",
+        "book"
+      ],
+      "author": "agent:lilyco-42/lyco_agent (CI)",
+      "size": 117356,
+      "published_at": "2026-09-13T09:19:03+0000"
+    },
+    {
+      "name": "asr-code-rust-book",
+      "version": "0.1.257",
+      "id": "sha256:29078c3c7c1408cece29eb182289425f416b5bf46cf948e2c9902c22db2263e8",
+      "file": "packages/asr-code-rust-book-0.1.257-29078c3c7c14.mpkg",
+      "intent": "Rust 官方教程 (The Book ch01-02) 知识蒸馏包: 逐条定位知识原子 + 确定性重蒸验证配方 (asr_code 蒸馏器)",
+      "tags": [
+        "rust",
+        "asr-code",
+        "knowledge",
+        "learning",
+        "book"
+      ],
+      "author": "agent:lilyco-42/lyco_agent (CI)",
+      "size": 256474,
+      "published_at": "2026-09-14T11:29:00+0000"
+    },
+    {
+      "name": "cargo-hello-world-from-video",
+      "version": "0.1.0",
+      "id": "sha256:0139430f49459b629fa1e2323f622b42481d076b22e81256612cd779b1cdb311",
+      "file": "packages/cargo-hello-world-from-video-0.1.0-0139430f4945.mpkg",
+      "intent": "从视频学会用 cargo 新建 Rust 项目并运行输出 hello world（cargo new / cd / cargo run）",
+      "tags": [
+        "cargo",
+        "rust",
+        "hello-world",
+        "video-distilled"
+      ],
+      "author": "agent:lyco_agent",
+      "size": 1594,
+      "published_at": "2026-09-16T22:22:46+0800"
+    },
+    {
+      "name": "asr-code-rust-book",
+      "version": "0.1.264",
+      "id": "sha256:2ff768934d4ddd91d096c580eb8cc390b1f4e36a602fecadf8455f27eb18ae74",
+      "file": "packages/asr-code-rust-book-0.1.264-2ff768934d4d.mpkg",
+      "intent": "Rust 官方教程 (The Book ch01-02) 知识蒸馏包: 逐条定位知识原子 + 确定性重蒸验证配方 (asr_code 蒸馏器)",
+      "tags": [
+        "rust",
+        "asr-code",
+        "knowledge",
+        "learning",
+        "book"
+      ],
+      "author": "agent:lilyco-42/lyco_agent (CI)",
+      "size": 256473,
+      "published_at": "2026-09-21T11:42:42+0000"
+    }
+  ]
+}

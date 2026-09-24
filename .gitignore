@@ -1,0 +1,16 @@
+# 渲染帧与临时产物
+frames*/
+frames_probe/
+frames_vid*/
+.playwright-mcp/
+bloss_raw/
+bloss_fine/
+mpkg_sample/
+asr_run.log
+*.tmp
+
+# BGM 源（版权音频，不入公开仓；成品视频内含音轨）
+pad.wav
+openai_brand_audio.wav
+openai_brand_asr.txt
+.workbuddy/

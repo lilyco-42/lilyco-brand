@@ -1,0 +1,38 @@
+{
+  "brand": "lilyco",
+  "display": "lilyco · 云枢智创",
+  "version": "0.1.0",
+  "derived_from": "OpenAI 品牌指南视频逐帧 OCR 读出的四条原则 (Simplicity / Space / Imperfection / Vivid) + Blossom 标识逻辑（圆=人的温度，直角=技术精确）",
+  "palette": {
+    "ink":     "#1B1B1F",
+    "inkSoft": "#3A3A42",
+    "accent":  "#7E92C6",
+    "cream":   "#F5EDE2",
+    "blush":   "#E3A9BC"
+  },
+  "type": {
+    "wordmark": "Century Gothic, Futura, Trebuchet MS, sans-serif",
+    "body":     "PingFang SC, Microsoft YaHei, sans-serif",
+    "note": "生产环境建议内嵌几何无衬线 webfont（如 Futura/Circular 类），避免系统回退导致字形漂移"
+  },
+  "tokens": {
+    "radius": "24px",
+    "space_unit": "8px",
+    "mark_size": 240,
+    "accent_usage": "全品牌仅一个 accent 色，用于核心/强调，其余一律单色 ink"
+  },
+  "principles": ["Simplicity", "Space", "Imperfection", "Vivid"],
+  "slogan": {
+    "main": "让人类远离计算机，AI 可做任何事",
+    "sub":  "如果不理解一个东西，就自己写一个它的最小实现"
+  },
+  "assets": {
+    "mark":            "lilyco-mark.svg",
+    "mark_construction":"lilyco-mark-construction.svg",
+    "lockup":          "lilyco-lockup.svg",
+    "animation_source":"promo.html"
+  },
+  "coupling": {
+    "mpkg": "本资产包按 mpkg-registry 契约打包（mpkg.json + artifacts/ + atoms/），可被 lyco_agent / mainm / vp-pipeline 复用"
+  }
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>lilyco — 让人类远离计算机，AI 可做任何事</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:#F5EDE2}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;
+    font-family:"Century Gothic","Futura","Trebuchet MS","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .layer{position:absolute;inset:0;pointer-events:none}
+  #glow{position:absolute;left:50%;top:44%;width:1100px;height:1100px;transform:translate(-50%,-50%);
+    border-radius:50%;background:radial-gradient(circle,rgba(126,146,198,.16),rgba(227,169,188,.07) 45%,transparent 70%);opacity:0}
+  .fl{position:absolute;left:0;top:0;will-change:transform,opacity}
+  /* 标识（三幕：种子网格 → 错峰编织 → 逐瓣点亮） */
+  #flower{left:0;top:0}
+  #word{left:960px;top:648px;font-family:"Century Gothic","Futura","Trebuchet MS",sans-serif;
+    font-size:150px;line-height:1;font-weight:700;letter-spacing:2px;color:#1B1B1F;white-space:nowrap;transform:translate(-50%,-50%)}
+  #word span{display:inline-block;opacity:0}
+  #word .co{color:#7E92C6}
+  #s1{left:960px;top:792px;font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:54px;
+    letter-spacing:14px;color:#1B1B1F;opacity:0;transform:translate(-50%,-50%)}
+  #stamp{left:1180px;top:452px;font-family:"Century Gothic","Futura","Trebuchet MS",sans-serif;
+    font-size:44px;font-weight:700;letter-spacing:2px;color:#7E92C6;opacity:0;transform:translate(-50%,-50%)}
+  #s2{left:960px;top:874px;font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:54px;
+    letter-spacing:14px;color:#7E92C6;font-weight:700;opacity:0;transform:translate(-50%,-50%)}
+  #end{left:960px;top:984px;font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:32px;
+    letter-spacing:8px;color:#5A5460;opacity:0;transform:translate(-50%,-50%)}
+  #wm{position:absolute;left:44px;top:1030px;font-size:24px;color:#8A7580;opacity:0;letter-spacing:2px}
+  .pt{position:absolute;left:0;top:0;opacity:0;will-change:transform,opacity}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="glow" class="layer"></div>
+
+  <!-- 三幕复刻 Blossom 动效（官方 24×24 路径，8 子路径拆分）：
+       幕一 种子网格（外圆 R + 6 等圆 R/2 玫瑰窗）→ 幕二 8 段错峰编织 → 幕三 逐瓣点亮实心收束 -->
+  <svg id="flower" class="fl" width="380" height="380" viewBox="-120 -120 240 240">
+    <g id="seedgrid" fill="none" stroke="#1B1B1F" stroke-width="2" opacity="0">
+      <circle cx="0" cy="0" r="96" pathLength="1" data-t0="0.55" style="stroke-dasharray:1;stroke-dashoffset:1"/>
+      <circle cx="0" cy="-48" r="48" transform="rotate(0)"   pathLength="1" data-t0="0.73" style="stroke-dasharray:1;stroke-dashoffset:1"/>
+      <circle cx="0" cy="-48" r="48" transform="rotate(60)"  pathLength="1" data-t0="0.82" style="stroke-dasharray:1;stroke-dashoffset:1"/>
+      <circle cx="0" cy="-48" r="48" transform="rotate(120)" pathLength="1" data-t0="0.91" style="stroke-dasharray:1;stroke-dashoffset:1"/>
+      <circle cx="0" cy="-48" r="48" transform="rotate(180)" pathLength="1" data-t0="1.00" style="stroke-dasharray:1;stroke-dashoffset:1"/>
+      <circle cx="0" cy="-48" r="48" transform="rotate(240)" pathLength="1" data-t0="1.09" style="stroke-dasharray:1;stroke-dashoffset:1"/>
+      <circle cx="0" cy="-48" r="48" transform="rotate(300)" pathLength="1" data-t0="1.18" style="stroke-dasharray:1;stroke-dashoffset:1"/>
+    </g>
+    <g id="knot">
+      <!-- 底层：完整 compound path 实心淡入（nonzero 缠绕保证六边形孔洞正确） -->
+      <path id="bloomfill" transform="scale(8.3333) translate(-12,-12)" fill="#1B1B1F" fill-opacity="0"
+        d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/>
+      <path class="k" d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729z" transform="scale(8.3333) translate(-12,-12)" pathLength="1" fill="none" data-t0="1.35" data-t1="2.60" data-f0="2.45" style="stroke:#1B1B1F;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1"/>
+      <path class="k" d="M13.2599 22.4292a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944z" transform="scale(8.3333) translate(-12,-12)" pathLength="1" fill="none" data-t0="2.00" data-t1="2.78" data-f0="2.63" style="stroke:#1B1B1F;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1"/>
+      <path class="k" d="M3.5991999999999997 18.303800000000003a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464z" transform="scale(8.3333) translate(-12,-12)" pathLength="1" fill="none" data-t0="2.12" data-t1="2.90" data-f0="2.75" style="stroke:#1B1B1F;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1"/>
+      <path class="k" d="M2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872z" transform="scale(8.3333) translate(-12,-12)" pathLength="1" fill="none" data-t0="2.24" data-t1="3.02" data-f0="2.87" style="stroke:#1B1B1F;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1"/>
+      <path class="k" d="M18.9371 11.7514L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667z" transform="scale(8.3333) translate(-12,-12)" pathLength="1" fill="none" data-t0="2.36" data-t1="3.14" data-f0="2.99" style="stroke:#1B1B1F;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1"/>
+      <path class="k" d="M20.9478 8.7283l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66z" transform="scale(8.3333) translate(-12,-12)" pathLength="1" fill="none" data-t0="2.48" data-t1="3.26" data-f0="3.11" style="stroke:#1B1B1F;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1"/>
+      <path class="k" d="M8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813z" transform="scale(8.3333) translate(-12,-12)" pathLength="1" fill="none" data-t0="2.60" data-t1="3.38" data-f0="3.23" style="stroke:#1B1B1F;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1"/>
+      <path class="k" d="M9.4041 10.497599999999998l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" transform="scale(8.3333) translate(-12,-12)" pathLength="1" fill="none" data-t0="3.30" data-t1="3.90" data-f0="3.75" style="stroke:#1B1B1F;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1"/>
+    </g>
+  </svg>
+
+  <!-- 42 印章式 monogram（标识保持纯净，42 独立于结之外） -->
+  <div id="stamp" class="fl">42</div>
+
+  <h1 id="word" class="fl"><span>l</span><span>i</span><span>l</span><span>y</span><span class="co">c</span><span class="co">o</span></h1>
+
+  <div id="s1" class="fl">让人类远离计算机</div>
+  <div id="s2" class="fl">AI 可做任何事</div>
+  <div id="end" class="fl">云枢智创 · lain42.top</div>
+
+  <div id="wm">© 2026 lilyco · 云枢智创 lain42.top</div>
+  <div id="pts" class="layer"></div>
+</div>
+
+<script>
+const DUR=16;
+const $=id=>document.getElementById(id);
+const stage=$('stage'),glow=$('glow'),flower=$('flower'),seedG=$('seedgrid'),knotG=$('knot'),bloomFill=$('bloomfill'),
+      stamp=$('stamp'),word=$('word'),s1=$('s1'),s2=$('s2'),end=$('end'),wm=$('wm'),pts=$('pts');
+const letters=[...word.querySelectorAll('span')];
+const seeds=[...seedG.querySelectorAll('circle')];
+const knotPaths=[...knotG.querySelectorAll('path.k')];
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const seg=(t,a,b)=>clamp((t-a)/(b-a),0,1);
+const eoc=p=>1-Math.pow(1-p,3);                 // cubic-out：克制、无回弹
+const eio=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+
+/* 少量、慢、低透明度的漂浮点（种子固定，逐帧可复现） */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd=mulberry32(42);
+const star='M0,-12 C1.2,-3.5 3.5,-1.2 12,0 C3.5,1.2 1.2,3.5 0,12 C-1.2,3.5 -3.5,1.2 -12,0 C-3.5,-1.2 -1.2,-3.5 0,-12 Z';
+const cols=['#7E92C6','#E3A9BC','#8A93A8'];
+const P=[];
+for(let i=0;i<6;i++){
+  const c=cols[i%3], s=.5+rnd()*.5;
+  const el=document.createElement('div'); el.className='pt';
+  el.innerHTML='<svg width="40" height="40" viewBox="-20 -20 40 40"><path d="'+star+'" fill="'+c+'"/></svg>';
+  pts.appendChild(el);
+  P.push({el,x:120+rnd()*1680,y:rnd()*1080,vy:8+rnd()*12,vx:(rnd()-.5)*6,ph:rnd()*6.28,s});
+}
+
+function render(t){
+  stage.style.opacity=eoc(seg(t,0,.7));
+  glow.style.opacity=(.9*eoc(seg(t,.2,1.4))*(1-seg(t,14.5,16))).toFixed(3);
+
+  /* 标识容器：居中，编织期间英雄放大，逐瓣点亮完成后收束到 1x，随后微微呼吸 */
+  const hs=1.3-.3*eio(seg(t,3.9,4.8));
+  const float=t>4.2?Math.sin(t*.6)*5:0;
+  flower.style.transform='translate(-50%,-50%) translate(960px,'+(372+float)+'px) scale('+hs.toFixed(3)+')';
+
+  /* 幕一：种子网格 —— 构造逻辑先现（错峰描边 + 缓旋归位，编织开始后交叉溶解） */
+  for(const c of seeds){
+    const p=eoc(seg(t,+c.dataset.t0,+c.dataset.t0+0.5));
+    c.style.strokeDashoffset=(1-p).toFixed(4);
+  }
+  seedG.style.opacity=(eoc(seg(t,0.55,1.2))*(1-seg(t,1.55,2.0))).toFixed(3);
+  seedG.setAttribute('transform','rotate('+(-16*(1-eio(seg(t,0.55,3.9)))).toFixed(2)+')');
+
+  /* 幕二：官方路径 8 段错峰编织（外轮廓→6 内瓣→中心六边形） */
+  knotG.setAttribute('transform','rotate('+(-6*(1-eio(seg(t,1.35,3.9)))).toFixed(2)+')');
+  for(const s of knotPaths){
+    const p=eoc(seg(t,+s.dataset.t0,+s.dataset.t1));
+    s.style.strokeDashoffset=(1-p).toFixed(4);
+  }
+  /* 幕三：完整 compound 实心淡入（孔洞由 nonzero 缠绕保证） */
+  bloomFill.style.fillOpacity=seg(t,3.90,4.40).toFixed(3);
+
+  /* 42 monogram：点亮完成后以克制方式淡入，作为独立印记，不挤入标识中心 */
+  const stampP=eoc(seg(t,3.95,4.85));
+  stamp.style.opacity=stampP.toFixed(3);
+  stamp.style.transform='translate(-50%,-50%) scale('+(0.8+0.2*stampP).toFixed(3)+')';
+
+  /* 字标：干净上浮，无回弹 */
+  const base=4.9;
+  letters.forEach((el,i)=>{
+    const p=eoc(seg(t,base+i*.16,base+.55+i*.16));
+    el.style.opacity=p.toFixed(3);
+    el.style.transform='translateY('+(26*(1-p)).toFixed(1)+'px)';
+  });
+
+  /* 标语：两段式，大量留白 */
+  s1.style.opacity=eoc(seg(t,6.9,7.9)).toFixed(3);
+  s2.style.opacity=eoc(seg(t,8.7,9.7)).toFixed(3);
+
+  /* 落版 */
+  end.style.opacity=eoc(seg(t,12.8,14.0)).toFixed(3);
+
+  /* 漂浮点 */
+  for(const o of P){
+    const y=((o.y-t*o.vy)%1080+1080)%1080-20, x=o.x+t*o.vx;
+    const edge=clamp(Math.min((y-10)/70,(1010-y)/70),0,1);
+    const tw=.5+.5*Math.sin(t*1.4+o.ph);
+    o.el.style.opacity=(edge*(.16+.34*tw)*eoc(seg(t,1.2,3.0))*(1-seg(t,14,16))).toFixed(3);
+    o.el.style.transform='translate(-50%,-50%) translate('+x+'px,'+y+'px) scale('+(o.s*(.7+.3*tw)).toFixed(3)+') rotate('+(t*8+o.ph*30)+'deg)';
+  }
+  wm.style.opacity=(.5*eoc(seg(t,1.0,2.0))*(1-seg(t,14.5,16))).toFixed(3);
+}
+
+/* 预览自动循环；外部 seek 即接管 */
+let auto=true; const t0=performance.now();
+(function loop(now){ if(auto) render(((now||0)-t0)/1000%DUR); requestAnimationFrame(loop); })(t0);
+window.DUR=DUR;
+window.seek=function(t){auto=false;render(t)};
+</script>
+</body>
+</html>

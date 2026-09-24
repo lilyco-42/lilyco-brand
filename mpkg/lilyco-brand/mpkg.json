@@ -1,0 +1,32 @@
+{
+  "mpkg": "0.1",
+  "name": "lilyco-brand",
+  "version": "0.3.0",
+  "intent": "lilyco 品牌标识资产包：风车结 mark（官方 OpenAI Blossom 路径真值 + 三幕动效，SVG 源 + 构造引导图 + 参数化生成器）、双色字标锁定组合、色彩/字型规范、16s 发布会风宣传视频动画源（确定性 seek HTML + 逐帧渲染脚本）、14s「42 砸地生百合」动画源（gen_lily.js 参数化 3+3 花被片 + 花蕊 + 茎叶）",
+  "author": "agent:lilyco-42/lyco_agent",
+  "created": "2026-09-24",
+  "requirements": {
+    "tools": [
+      { "name": "node", "min_version": "18" },
+      { "name": "ffmpeg" },
+      { "name": "chrome", "note": "headless 渲染 promo.html 用；路径可在 render.js 中改" }
+    ],
+    "os": ["windows", "linux"]
+  },
+  "steps": [
+    { "run": "mkdir -p {{work}}/out", "expect": { "exit": 0 } },
+    { "run": "cp -r {{pkg}}/artifacts {{work}}/out/", "expect": { "exit": 0 } },
+    { "run": "cp {{pkg}}/promo.html {{pkg}}/render.js {{pkg}}/render2.js {{pkg}}/gen_blossom.js {{pkg}}/gen_lily.js {{pkg}}/lily_promo.html {{work}}/out/", "expect": { "exit": 0 } }
+  ],
+  "verify": [
+    "node -e \"const s=require('fs').readFileSync('{{work}}/out/promo.html','utf8'); if(!s.includes('window.seek')) process.exit(1); if(!s.includes('window.DUR=16')) process.exit(2);\"",
+    "node -e \"const s=require('fs').readFileSync('{{work}}/out/lily_promo.html','utf8'); if(!s.includes('window.seek')) process.exit(5); if(!s.includes('window.DUR=14')) process.exit(6); if((s.match(/class=\\\"pw\\\"/g)||[]).length!==6) process.exit(7);\"",
+    "node -e \"const j=require('{{work}}/out/artifacts/brand-spec.json'); if(j.palette.accent!=='#7E92C6') process.exit(3); if(j.principles.length!==4) process.exit(4);\""
+  ],
+  "atoms": [
+    { "kind": "text", "path": "atoms/brand-principles.md", "title": "lilyco 品牌四原则与视觉逻辑（源自 OpenAI 品牌指南视频逐帧 OCR）" },
+    { "kind": "text", "path": "atoms/render-pipeline.md", "title": "HTML→Video 确定性渲染管线配方（seek 契约 + Playwright + ffmpeg）" }
+  ],
+  "tags": ["brand", "logo", "svg", "video", "lilyco", "html2video", "design-system"],
+  "license": "MIT"
+}
