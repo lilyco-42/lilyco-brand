@@ -51,3 +51,44 @@ git push
   42 重力砸落 → 冲击环/裂纹/尘埃/镜头震动/squash → 升为顶冠 → 地面裂缝长出百合
   （参数化 3+3 花被片错峰旋开编织 + 6 雄蕊 1 雌蕊点亮）→ 缓缓浮现 lyco brain · 云枢智创。
 - 像素统计验收：空场 0.02% / 42 落地 41.1% / 绽放 3.7%→5.4% / 文字 22.9% / 顶冠 13.2%。
+
+## 0.3.0 实际执行记录（逐条命令回放，2026-09-24 20:45）
+
+> 「注册为 mpkg」= 打包（zip + sha256 命名）→ 索引条目 → 推 registry。全程 5 步，可照抄。
+
+```bash
+# ① 同步资产进包体目录（新文件 cp 进去即可，其余不动）
+cp promo.html mpkg/lilyco-brand/promo.html
+cp gen_lily.js lily_promo.html render2.js mpkg/lilyco-brand/
+cp artifacts/lily-paths.html mpkg/lilyco-brand/artifacts/
+
+# ② 打包：zip 全目录 → sha256 前 12 位命名 → 打印三元组（sha/文件名/size）
+python repack.py
+#   → sha256: 2591fc9bddf4…  name: lilyco-brand-0.3.0-2591fc9bddf4.mpkg  size: 31769
+
+# ③ 更新 mpkg/index-entry.json（version/id=sha256:全串/file/size/published_at/intent），
+#    同步改 mpkg/lilyco-brand/mpkg.json 的 version 与 intent，删除旧版本包文件。
+
+# ④ 发布到 registry（lilyco-42/mpkg-registry，公开仓）
+gh repo clone lilyco-42/mpkg-registry /tmp/mpkg-registry && cd /tmp/mpkg-registry
+cp <本地>/lilyco-brand-0.3.0-2591fc9bddf4.mpkg packages/
+node -e "  # 把 index-entry.json 的对象替换进 index.json 的 packages[]（同名旧条目移除）
+  const fs=require('fs');
+  const idx=JSON.parse(fs.readFileSync('index.json','utf8'));
+  const entry=JSON.parse(fs.readFileSync('<本地>/mpkg/index-entry.json','utf8'));
+  idx.packages=idx.packages.filter(p=>p.name!=='lilyco-brand');
+  idx.packages.push(entry);
+  fs.writeFileSync('index.json',JSON.stringify(idx,null,2)+'\n');"
+git add -A && git commit -m "publish lilyco-brand 0.3.0 (2591fc9bddf4) — …" && git push
+
+# ⑤ 校验：index 条目数 == packages/ 下 .mpkg 文件数，且每个 file 字段文件存在
+node -e "const fs=require('fs');const idx=JSON.parse(fs.readFileSync('index.json','utf8'));
+  let ok=0,miss=0;for(const p of idx.packages){fs.existsSync(p.file)?ok++:miss++}
+  console.log(ok, miss);"
+
+# 附：品牌资产独立仓（本次顺带创建，与 registry 是两回事）
+gh repo create lilyco-brand --public --source . --push
+```
+
+教训：④ 的清理逻辑若做「删除 index 未引用的包」，先核对被删文件是否真为孤儿
+（本次曾删 kbv-video-distill-0.1.0-cd5e1ab0b57f.mpkg——index 正主是 c6fdbee7a313，确认无伤）。
